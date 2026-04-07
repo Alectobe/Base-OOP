@@ -1,0 +1,16 @@
+REPORT TYPE: RISK
+GENERATED AT: 2026-04-07T19:16:49
+======================================================================
+RISK STATISTICS:
+  medium: 13
+  high: 12
+SUSPICIOUS OPERATIONS COUNT: 25
+BLOCKED TRANSACTIONS COUNT: 6
+
+BLOCKED TRANSACTIONS:
+  - 9508AC7FDC | transfer_external | 120.0 USD | Операция заблокирована системой риск-анализа.
+  - 668EC104F4 | transfer_internal | 210.0 USD | Операция заблокирована системой риск-анализа.
+  - 8AE8892F43 | transfer_internal | 70000.0 RUB | Операция заблокирована системой риск-анализа.
+  - 57104425CA | transfer_internal | 50000.0 EUR | Операция заблокирована системой риск-анализа.
+  - 6F136C7971 | transfer_external | 65000.0 RUB | Операция заблокирована системой риск-анализа.
+  - 50ECF020EC | transfer_internal | 100000.0 KZT | Операция заблокирована системой риск-анализа.

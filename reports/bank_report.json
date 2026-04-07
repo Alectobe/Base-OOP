@@ -1,0 +1,70 @@
+{
+    "report_type": "bank",
+    "generated_at": "2026-04-07T19:16:49",
+    "bank_name": "Base OOP Bank",
+    "total_balance_raw": 1184088.75,
+    "clients_count": 6,
+    "accounts_count": 12,
+    "top_clients": [
+        {
+            "client_id": "C003",
+            "full_name": "Олег Сидоров",
+            "status": "active",
+            "total_balance": 892164.5,
+            "accounts_count": 2
+        },
+        {
+            "client_id": "C001",
+            "full_name": "Иван Петров",
+            "status": "active",
+            "total_balance": 176185.0,
+            "accounts_count": 2
+        },
+        {
+            "client_id": "C005",
+            "full_name": "Дмитрий Волков",
+            "status": "active",
+            "total_balance": 44220.0,
+            "accounts_count": 2
+        }
+    ],
+    "transactions_statistics": {
+        "total_transactions": 36,
+        "by_status": {
+            "completed": 25,
+            "blocked": 6,
+            "failed": 4,
+            "cancelled": 1
+        },
+        "by_type": {
+            "deposit": 8,
+            "withdraw": 6,
+            "transfer_internal": 16,
+            "transfer_external": 6
+        },
+        "total_commissions": 381.25
+    },
+    "accounts_statistics": {
+        "by_currency": {
+            "RUB": 4,
+            "USD": 4,
+            "EUR": 2,
+            "KZT": 1,
+            "CNY": 1
+        },
+        "by_type": {
+            "SavingsAccount": 5,
+            "PremiumAccount": 4,
+            "InvestmentAccount": 3
+        }
+    },
+    "audit_statistics": {
+        "total_errors": 18,
+        "critical_errors": 12,
+        "by_event_type": {
+            "risk_detected": 6,
+            "transaction_blocked": 6,
+            "transaction_failed": 6
+        }
+    }
+}

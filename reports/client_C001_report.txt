@@ -1,0 +1,26 @@
+REPORT TYPE: CLIENT
+GENERATED AT: 2026-04-07T19:16:49
+======================================================================
+CLIENT: Иван Петров (C001)
+STATUS: active
+CONTACTS: {'phone': '+79990000001', 'email': 'ivan@example.com'}
+ACCOUNTS COUNT: 2
+
+ACCOUNTS:
+  - SavingsAccount | 4A68DC6F | 172750.0 RUB | status=active
+  - PremiumAccount | 53A28053 | 3435.0 USD | status=active
+
+TRANSACTIONS SUMMARY:
+  total_transactions: 14
+  completed: 10
+  failed: 1
+  blocked: 3
+  cancelled: 0
+
+RISK PROFILE:
+  client_id: C001
+  total_events: 17
+  suspicious_events: 9
+  high_risk_events: 6
+  medium_risk_events: 3
+  highest_risk: high
