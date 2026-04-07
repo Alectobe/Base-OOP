@@ -1,13 +1,7 @@
-from src.models import (
-    AccountStatus,
-    Currency,
-    InsufficientFundsError,
-    InvalidOperationError,
-    InvestmentAccount,
-    Owner,
-    PremiumAccount,
-    SavingsAccount,
-)
+from datetime import time
+
+from src.bank import Bank, Client
+from src.models import Currency, PremiumAccount, SavingsAccount
 
 
 def print_separator(title: str) -> None:
@@ -15,84 +9,96 @@ def print_separator(title: str) -> None:
 
 
 def main() -> None:
-    owner1 = Owner(full_name="Иван Петров", client_id="C001")
-    owner2 = Owner(full_name="Анна Смирнова", client_id="C002")
-    owner3 = Owner(full_name="Олег Сидоров", client_id="C003")
+    bank = Bank("Base OOP Bank")
 
-    savings = SavingsAccount(
-        owner=owner1,
-        balance=10000.0,
-        currency=Currency.RUB,
-        min_balance=2000.0,
-        monthly_interest_rate=0.015,
+    client1 = Client(
+        full_name="Иван Петров",
+        client_id="C001",
+        age=30,
+        contacts={"phone": "+79990000001", "email": "ivan@example.com"},
+        security_code="1111",
     )
 
-    premium = PremiumAccount(
-        owner=owner2,
-        balance=5000.0,
-        currency=Currency.USD,
-        overdraft_limit=3000.0,
-        withdrawal_fee=25.0,
-        daily_withdrawal_limit=20000.0,
+    client2 = Client(
+        full_name="Анна Смирнова",
+        client_id="C002",
+        age=28,
+        contacts={"phone": "+79990000002", "email": "anna@example.com"},
+        security_code="2222",
     )
 
-    investment = InvestmentAccount(
-        owner=owner3,
+    bank.add_client(client1)
+    bank.add_client(client2)
+
+    print_separator("АУТЕНТИФИКАЦИЯ")
+    print("Успешный вход C001:", bank.authenticate_client("C001", "1111"))
+    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
+    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
+    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
+    print("Повторный вход C002 после блокировки:", bank.authenticate_client("C002", "2222"))
+
+    print_separator("ОТКРЫТИЕ СЧЕТОВ")
+    savings = bank.open_account(
+        client_id="C001",
+        account_cls=SavingsAccount,
         balance=15000.0,
-        currency=Currency.USD,
-        portfolio={
-            "stocks": 10000.0,
-            "bonds": 5000.0,
-            "etf": 7000.0,
-        },
+        currency=Currency.RUB,
+        min_balance=3000.0,
+        monthly_interest_rate=0.02,
+        current_time=time(10, 30),
     )
-
-    accounts = [savings, premium, investment]
-
-    print_separator("СОЗДАННЫЕ СЧЕТА")
-    for account in accounts:
-        print(account)
-
-    print_separator("SAVINGS ACCOUNT")
-    print("До начисления процентов:", savings)
-    interest = savings.apply_monthly_interest()
-    print(f"Начисленные проценты: {interest:.2f} {savings.currency.value}")
-    print("После начисления процентов:", savings)
+    print(savings)
 
     try:
-        savings.withdraw(9500.0)
-    except InvalidOperationError as error:
-        print(f"Ошибка снятия с накопительного счёта: {error}")
+        premium = bank.open_account(
+            client_id="C002",
+            account_cls=PremiumAccount,
+            balance=7000.0,
+            currency=Currency.USD,
+            overdraft_limit=5000.0,
+            withdrawal_fee=20.0,
+            daily_withdrawal_limit=30000.0,
+            current_time=time(11, 0),
+        )
+        print(premium)
+    except Exception as error:
+        print("Не удалось открыть счёт C002:", error)
 
-    savings.withdraw(3000.0)
-    print("После корректного снятия:", savings)
-    print(savings.get_account_info())
+    print_separator("ОПЕРАЦИИ ПО СЧЁТУ")
+    bank.deposit_to_account(savings.account_id, 2000.0, current_time=time(12, 0))
+    print("После пополнения:", savings)
 
-    print_separator("PREMIUM ACCOUNT")
-    print("До снятия:", premium)
-    premium.withdraw(7000.0)
-    print("После снятия с овердрафтом и комиссией:", premium)
-    print(premium.get_account_info())
+    bank.withdraw_from_account(savings.account_id, 4000.0, current_time=time(13, 0))
+    print("После снятия:", savings)
 
+    print_separator("ЗАМОРОЗКА")
+    bank.freeze_account(savings.account_id, reason="Подозрительная активность", current_time=time(14, 0))
+    print(bank.get_account(savings.account_id))
+
+    bank.unfreeze_account(savings.account_id, current_time=time(15, 0))
+    print("После разморозки:", bank.get_account(savings.account_id))
+
+    print_separator("НОЧНОЙ ЗАПРЕТ")
     try:
-        premium.withdraw(50000.0)
-    except (InvalidOperationError, InsufficientFundsError) as error:
-        print(f"Ошибка premium-счёта: {error}")
+        bank.deposit_to_account(savings.account_id, 500.0, current_time=time(1, 30))
+    except Exception as error:
+        print("Ночная операция запрещена:", error)
 
-    print_separator("INVESTMENT ACCOUNT")
-    print("До изменений:", investment)
-    investment.add_asset("stocks", 2500.0)
-    investment.add_asset("etf", 1500.0)
-    investment.withdraw(2000.0)
-    print("После операций:", investment)
-    print("Информация:", investment.get_account_info())
-    print("Прогноз роста на год:", investment.project_yearly_growth())
-
-    print_separator("ПОЛИМОРФИЗМ")
-    for account in accounts:
-        print(f"{account.__class__.__name__}:")
+    print_separator("ПОИСК СЧЕТОВ")
+    found_accounts = bank.search_accounts(client_id="C001")
+    for account in found_accounts:
         print(account)
-        print(account.get_account_info())
+
+    print_separator("ОБЩИЙ БАЛАНС")
+    print(bank.get_total_balance())
+
+    print_separator("РЕЙТИНГ КЛИЕНТОВ")
+    for item in bank.get_clients_ranking():
+        print(item)
+
+    print_separator("ПОДОЗРИТЕЛЬНЫЕ ДЕЙСТВИЯ")
+    for action in bank.suspicious_actions:
+        print(action)
 
 
 if __name__ == "__main__":

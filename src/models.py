@@ -48,7 +48,6 @@ class AssetType(str, Enum):
 
 @dataclass(frozen=True)
 class Owner:
-    """Модель владельца счёта."""
     full_name: str
     client_id: str
 
@@ -60,8 +59,6 @@ class Owner:
 
 
 class AbstractAccount(ABC):
-    """Абстрактная модель банковского счёта."""
-
     def __init__(
         self,
         owner: Owner,
@@ -81,7 +78,6 @@ class AbstractAccount(ABC):
 
     @staticmethod
     def _generate_account_id() -> str:
-        """Генерация короткого UUID."""
         return uuid4().hex[:8].upper()
 
     @staticmethod
@@ -150,8 +146,6 @@ class AbstractAccount(ABC):
 
 
 class BankAccount(AbstractAccount):
-    """Базовый банковский счёт."""
-
     def __init__(
         self,
         owner: Owner,
@@ -206,8 +200,6 @@ class BankAccount(AbstractAccount):
 
 
 class SavingsAccount(BankAccount):
-    """Накопительный счёт с минимальным остатком и месячными процентами."""
-
     def __init__(
         self,
         owner: Owner,
@@ -247,8 +239,8 @@ class SavingsAccount(BankAccount):
     def withdraw(self, amount: float) -> None:
         self._ensure_account_is_operable()
         valid_amount = self._validate_amount(amount)
-
         projected_balance = self._balance - valid_amount
+
         if projected_balance < self._min_balance:
             raise InvalidOperationError(
                 f"Нельзя опустить баланс ниже минимального остатка {self._min_balance:.2f}."
@@ -285,8 +277,6 @@ class SavingsAccount(BankAccount):
 
 
 class PremiumAccount(BankAccount):
-    """Премиальный счёт с овердрафтом и комиссией."""
-
     def __init__(
         self,
         owner: Owner,
@@ -373,8 +363,6 @@ class PremiumAccount(BankAccount):
 
 
 class InvestmentAccount(BankAccount):
-    """Инвестиционный счёт с виртуальным портфелем."""
-
     def __init__(
         self,
         owner: Owner,
