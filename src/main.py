@@ -1,10 +1,12 @@
-from models import (
-    AccountFrozenError,
+from src.models import (
     AccountStatus,
-    BankAccount,
     Currency,
     InsufficientFundsError,
+    InvalidOperationError,
+    InvestmentAccount,
     Owner,
+    PremiumAccount,
+    SavingsAccount,
 )
 
 
@@ -13,53 +15,84 @@ def print_separator(title: str) -> None:
 
 
 def main() -> None:
-    owner_active = Owner(full_name="Иван Петров", client_id="C001")
-    owner_frozen = Owner(full_name="Анна Смирнова", client_id="C002")
+    owner1 = Owner(full_name="Иван Петров", client_id="C001")
+    owner2 = Owner(full_name="Анна Смирнова", client_id="C002")
+    owner3 = Owner(full_name="Олег Сидоров", client_id="C003")
 
-    active_account = BankAccount(
-        owner=owner_active,
-        balance=1000.0,
+    savings = SavingsAccount(
+        owner=owner1,
+        balance=10000.0,
         currency=Currency.RUB,
-        status=AccountStatus.ACTIVE,
+        min_balance=2000.0,
+        monthly_interest_rate=0.015,
     )
 
-    frozen_account = BankAccount(
-        owner=owner_frozen,
-        balance=500.0,
+    premium = PremiumAccount(
+        owner=owner2,
+        balance=5000.0,
         currency=Currency.USD,
-        status=AccountStatus.FROZEN,
+        overdraft_limit=3000.0,
+        withdrawal_fee=25.0,
+        daily_withdrawal_limit=20000.0,
     )
 
-    print_separator("СОЗДАНИЕ СЧЕТОВ")
-    print(active_account)
-    print(frozen_account)
+    investment = InvestmentAccount(
+        owner=owner3,
+        balance=15000.0,
+        currency=Currency.USD,
+        portfolio={
+            "stocks": 10000.0,
+            "bonds": 5000.0,
+            "etf": 7000.0,
+        },
+    )
 
-    print_separator("ВАЛИДНОЕ ПОПОЛНЕНИЕ")
-    active_account.deposit(250.0)
-    print(active_account)
-    print(active_account.get_account_info())
+    accounts = [savings, premium, investment]
 
-    print_separator("ВАЛИДНОЕ СНЯТИЕ")
-    active_account.withdraw(300.0)
-    print(active_account)
-    print(active_account.get_account_info())
+    print_separator("СОЗДАННЫЕ СЧЕТА")
+    for account in accounts:
+        print(account)
 
-    print_separator("ПОПЫТКА ОПЕРАЦИИ НАД ЗАМОРОЖЕННЫМ СЧЁТОМ")
+    print_separator("SAVINGS ACCOUNT")
+    print("До начисления процентов:", savings)
+    interest = savings.apply_monthly_interest()
+    print(f"Начисленные проценты: {interest:.2f} {savings.currency.value}")
+    print("После начисления процентов:", savings)
+
     try:
-        frozen_account.deposit(100.0)
-    except AccountFrozenError as error:
-        print(f"Ошибка пополнения: {error}")
+        savings.withdraw(9500.0)
+    except InvalidOperationError as error:
+        print(f"Ошибка снятия с накопительного счёта: {error}")
+
+    savings.withdraw(3000.0)
+    print("После корректного снятия:", savings)
+    print(savings.get_account_info())
+
+    print_separator("PREMIUM ACCOUNT")
+    print("До снятия:", premium)
+    premium.withdraw(7000.0)
+    print("После снятия с овердрафтом и комиссией:", premium)
+    print(premium.get_account_info())
 
     try:
-        frozen_account.withdraw(50.0)
-    except AccountFrozenError as error:
-        print(f"Ошибка снятия: {error}")
+        premium.withdraw(50000.0)
+    except (InvalidOperationError, InsufficientFundsError) as error:
+        print(f"Ошибка premium-счёта: {error}")
 
-    print_separator("ПОПЫТКА СНЯТЬ БОЛЬШЕ, ЧЕМ ЕСТЬ")
-    try:
-        active_account.withdraw(5000.0)
-    except InsufficientFundsError as error:
-        print(f"Ошибка снятия: {error}")
+    print_separator("INVESTMENT ACCOUNT")
+    print("До изменений:", investment)
+    investment.add_asset("stocks", 2500.0)
+    investment.add_asset("etf", 1500.0)
+    investment.withdraw(2000.0)
+    print("После операций:", investment)
+    print("Информация:", investment.get_account_info())
+    print("Прогноз роста на год:", investment.project_yearly_growth())
+
+    print_separator("ПОЛИМОРФИЗМ")
+    for account in accounts:
+        print(f"{account.__class__.__name__}:")
+        print(account)
+        print(account.get_account_info())
 
 
 if __name__ == "__main__":
