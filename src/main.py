@@ -1,7 +1,14 @@
-from datetime import time
+from datetime import datetime, timedelta, time
 
 from src.bank import Bank, Client
-from src.models import Currency, PremiumAccount, SavingsAccount
+from src.models import Currency, InvestmentAccount, PremiumAccount, SavingsAccount
+from src.transactions import (
+    Transaction,
+    TransactionProcessor,
+    TransactionQueue,
+    TransactionStatus,
+    TransactionType,
+)
 
 
 def print_separator(title: str) -> None:
@@ -18,7 +25,6 @@ def main() -> None:
         contacts={"phone": "+79990000001", "email": "ivan@example.com"},
         security_code="1111",
     )
-
     client2 = Client(
         full_name="Анна Смирнова",
         client_id="C002",
@@ -26,79 +32,172 @@ def main() -> None:
         contacts={"phone": "+79990000002", "email": "anna@example.com"},
         security_code="2222",
     )
+    client3 = Client(
+        full_name="Олег Сидоров",
+        client_id="C003",
+        age=35,
+        contacts={"phone": "+79990000003", "email": "oleg@example.com"},
+        security_code="3333",
+    )
 
     bank.add_client(client1)
     bank.add_client(client2)
+    bank.add_client(client3)
 
-    print_separator("АУТЕНТИФИКАЦИЯ")
-    print("Успешный вход C001:", bank.authenticate_client("C001", "1111"))
-    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
-    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
-    print("Ошибка входа C002:", bank.authenticate_client("C002", "9999"))
-    print("Повторный вход C002 после блокировки:", bank.authenticate_client("C002", "2222"))
-
-    print_separator("ОТКРЫТИЕ СЧЕТОВ")
-    savings = bank.open_account(
+    acc1 = bank.open_account(
         client_id="C001",
         account_cls=SavingsAccount,
         balance=15000.0,
         currency=Currency.RUB,
         min_balance=3000.0,
-        monthly_interest_rate=0.02,
-        current_time=time(10, 30),
+        monthly_interest_rate=0.01,
+        current_time=time(10, 0),
     )
-    print(savings)
+    acc2 = bank.open_account(
+        client_id="C002",
+        account_cls=PremiumAccount,
+        balance=5000.0,
+        currency=Currency.USD,
+        overdraft_limit=4000.0,
+        withdrawal_fee=20.0,
+        daily_withdrawal_limit=30000.0,
+        current_time=time(10, 5),
+    )
+    acc3 = bank.open_account(
+        client_id="C003",
+        account_cls=InvestmentAccount,
+        balance=12000.0,
+        currency=Currency.EUR,
+        portfolio={"stocks": 4000.0, "bonds": 2000.0, "etf": 3000.0},
+        current_time=time(10, 10),
+    )
 
-    try:
-        premium = bank.open_account(
-            client_id="C002",
-            account_cls=PremiumAccount,
-            balance=7000.0,
+    queue = TransactionQueue()
+    processor = TransactionProcessor(bank)
+
+    now = datetime.now()
+
+    transactions = [
+        Transaction(
+            transaction_type=TransactionType.DEPOSIT,
+            amount=1000.0,
+            currency=Currency.RUB,
+            receiver_account_id=acc1.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.WITHDRAW,
+            amount=500.0,
+            currency=Currency.RUB,
+            sender_account_id=acc1.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.TRANSFER_INTERNAL,
+            amount=100.0,
             currency=Currency.USD,
-            overdraft_limit=5000.0,
-            withdrawal_fee=20.0,
-            daily_withdrawal_limit=30000.0,
-            current_time=time(11, 0),
+            sender_account_id=acc2.account_id,
+            receiver_account_id=acc3.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.TRANSFER_EXTERNAL,
+            amount=200.0,
+            currency=Currency.USD,
+            sender_account_id=acc2.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.TRANSFER_INTERNAL,
+            amount=3000.0,
+            currency=Currency.RUB,
+            sender_account_id=acc1.account_id,
+            receiver_account_id=acc2.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.DEPOSIT,
+            amount=700.0,
+            currency=Currency.EUR,
+            receiver_account_id=acc3.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.WITHDRAW,
+            amount=250.0,
+            currency=Currency.EUR,
+            sender_account_id=acc3.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.TRANSFER_INTERNAL,
+            amount=100000.0,
+            currency=Currency.RUB,
+            sender_account_id=acc1.account_id,
+            receiver_account_id=acc3.account_id,
+        ),
+        Transaction(
+            transaction_type=TransactionType.TRANSFER_EXTERNAL,
+            amount=1500.0,
+            currency=Currency.USD,
+            sender_account_id=acc2.account_id,
+            scheduled_at=now + timedelta(seconds=1),
+        ),
+        Transaction(
+            transaction_type=TransactionType.DEPOSIT,
+            amount=800.0,
+            currency=Currency.USD,
+            receiver_account_id=acc2.account_id,
+        ),
+    ]
+
+    priorities = [20, 30, 10, 15, 40, 25, 35, 5, 50, 12]
+
+    print_separator("ДОБАВЛЕНИЕ 10 ТРАНЗАКЦИЙ В ОЧЕРЕДЬ")
+    for transaction, priority in zip(transactions, priorities):
+        queue.add_transaction(transaction, priority=priority)
+        print(
+            f"Добавлена транзакция {transaction.transaction_id}: "
+            f"{transaction.transaction_type.value}, priority={priority}"
         )
-        print(premium)
-    except Exception as error:
-        print("Не удалось открыть счёт C002:", error)
 
-    print_separator("ОПЕРАЦИИ ПО СЧЁТУ")
-    bank.deposit_to_account(savings.account_id, 2000.0, current_time=time(12, 0))
-    print("После пополнения:", savings)
+    print_separator("ОТМЕНА ОДНОЙ ТРАНЗАКЦИИ")
+    queue.cancel_transaction(transactions[6].transaction_id)
+    print(f"Отменена транзакция {transactions[6].transaction_id}")
 
-    bank.withdraw_from_account(savings.account_id, 4000.0, current_time=time(13, 0))
-    print("После снятия:", savings)
+    print_separator("ПЕРВАЯ ОБРАБОТКА ОЧЕРЕДИ")
+    processed_first = processor.process_queue(queue, now=now)
+    for transaction in processed_first:
+        print(
+            f"{transaction.transaction_id}: "
+            f"status={transaction.status.value}, "
+            f"reason='{transaction.failure_reason}', "
+            f"commission={transaction.commission:.2f}"
+        )
 
-    print_separator("ЗАМОРОЗКА")
-    bank.freeze_account(savings.account_id, reason="Подозрительная активность", current_time=time(14, 0))
-    print(bank.get_account(savings.account_id))
+    print_separator("ВТОРАЯ ОБРАБОТКА ОЧЕРЕДИ ОТЛОЖЕННЫХ")
+    processed_second = processor.process_queue(queue, now=now + timedelta(minutes=1))
+    for transaction in processed_second:
+        print(
+            f"{transaction.transaction_id}: "
+            f"status={transaction.status.value}, "
+            f"reason='{transaction.failure_reason}', "
+            f"commission={transaction.commission:.2f}"
+        )
 
-    bank.unfreeze_account(savings.account_id, current_time=time(15, 0))
-    print("После разморозки:", bank.get_account(savings.account_id))
+    print_separator("ИТОГОВЫЕ СЧЕТА")
+    print(acc1)
+    print(acc2)
+    print(acc3)
 
-    print_separator("НОЧНОЙ ЗАПРЕТ")
-    try:
-        bank.deposit_to_account(savings.account_id, 500.0, current_time=time(1, 30))
-    except Exception as error:
-        print("Ночная операция запрещена:", error)
-
-    print_separator("ПОИСК СЧЕТОВ")
-    found_accounts = bank.search_accounts(client_id="C001")
-    for account in found_accounts:
-        print(account)
-
-    print_separator("ОБЩИЙ БАЛАНС")
-    print(bank.get_total_balance())
-
-    print_separator("РЕЙТИНГ КЛИЕНТОВ")
-    for item in bank.get_clients_ranking():
+    print_separator("ОШИБКИ ПРОЦЕССОРА")
+    for item in processor.error_log:
         print(item)
 
-    print_separator("ПОДОЗРИТЕЛЬНЫЕ ДЕЙСТВИЯ")
-    for action in bank.suspicious_actions:
-        print(action)
+    print_separator("ВСЕ ТРАНЗАКЦИИ")
+    for transaction in transactions:
+        print(
+            transaction.transaction_id,
+            transaction.transaction_type.value,
+            transaction.status.value,
+            transaction.failure_reason,
+        )
+
+    print_separator("ОБЩИЙ БАЛАНС БАНКА")
+    print(bank.get_total_balance())
 
 
 if __name__ == "__main__":
