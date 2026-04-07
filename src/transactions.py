@@ -8,6 +8,7 @@ from itertools import count
 from typing import Any
 from uuid import uuid4
 
+from src.audit import AuditLevel, AuditLog, RiskAnalyzer, RiskLevel
 from src.bank import Bank
 from src.models import (
     AccountStatus,
@@ -32,6 +33,7 @@ class TransactionStatus(str, Enum):
     FAILED = "failed"
     CANCELLED = "cancelled"
     DELAYED = "delayed"
+    BLOCKED = "blocked"
 
 
 @dataclass
@@ -96,6 +98,11 @@ class Transaction:
         self.status = TransactionStatus.DELAYED
         self.updated_at = datetime.now()
 
+    def mark_blocked(self, reason: str) -> None:
+        self.status = TransactionStatus.BLOCKED
+        self.failure_reason = reason
+        self.updated_at = datetime.now()
+
 
 class TransactionQueue:
     def __init__(self) -> None:
@@ -154,6 +161,8 @@ class TransactionProcessor:
         exchange_rates: dict[tuple[str, str], float] | None = None,
         external_transfer_fee_rate: float = 0.02,
         fixed_external_fee: float = 30.0,
+        audit_log: AuditLog | None = None,
+        risk_analyzer: RiskAnalyzer | None = None,
     ) -> None:
         self._bank = bank
         self._exchange_rates = exchange_rates or {
@@ -172,6 +181,8 @@ class TransactionProcessor:
         self._fixed_external_fee = float(fixed_external_fee)
         self._error_log: list[dict[str, str]] = []
         self._processed_transactions: list[Transaction] = []
+        self._audit_log = audit_log
+        self._risk_analyzer = risk_analyzer
 
     @property
     def error_log(self) -> list[dict[str, str]]:
@@ -180,6 +191,45 @@ class TransactionProcessor:
     @property
     def processed_transactions(self) -> list[Transaction]:
         return self._processed_transactions.copy()
+
+    def _log_audit(
+        self,
+        level: AuditLevel,
+        event_type: str,
+        message: str,
+        transaction: Transaction,
+        risk_level: RiskLevel | None = None,
+        extra_metadata: dict[str, Any] | None = None,
+    ) -> None:
+        if self._audit_log is None:
+            return
+
+        client_id = None
+        account_id = transaction.sender_account_id or transaction.receiver_account_id
+
+        if transaction.sender_account_id:
+            try:
+                sender = self._bank.get_account(transaction.sender_account_id)
+                client_id = sender.owner.client_id
+            except Exception:
+                client_id = None
+        elif transaction.receiver_account_id:
+            try:
+                receiver = self._bank.get_account(transaction.receiver_account_id)
+                client_id = receiver.owner.client_id
+            except Exception:
+                client_id = None
+
+        self._audit_log.log(
+            level=level,
+            event_type=event_type,
+            message=message,
+            client_id=client_id,
+            account_id=account_id,
+            transaction_id=transaction.transaction_id,
+            risk_level=risk_level,
+            metadata=extra_metadata or {},
+        )
 
     def _log_error(self, transaction: Transaction, message: str) -> None:
         self._error_log.append(
@@ -218,7 +268,41 @@ class TransactionProcessor:
     def _calculate_external_commission(self, amount: float) -> float:
         return round(amount * self._external_transfer_fee_rate + self._fixed_external_fee, 2)
 
+    def _analyze_risk(self, transaction: Transaction) -> dict[str, Any] | None:
+        if self._risk_analyzer is None:
+            return None
+        return self._risk_analyzer.analyze_transaction(transaction, operation_time=transaction.created_at)
+
     def process_transaction(self, transaction: Transaction) -> bool:
+        risk_result = self._analyze_risk(transaction)
+
+        if risk_result is not None:
+            risk_level = risk_result["risk_level"]
+            triggers = risk_result["triggers"]
+
+            if risk_level in {RiskLevel.MEDIUM, RiskLevel.HIGH}:
+                self._log_audit(
+                    level=AuditLevel.WARNING if risk_level == RiskLevel.MEDIUM else AuditLevel.CRITICAL,
+                    event_type="risk_detected",
+                    message=f"Обнаружен риск {risk_level.value}: {', '.join(triggers) if triggers else 'no_triggers'}",
+                    transaction=transaction,
+                    risk_level=risk_level,
+                    extra_metadata={"triggers": triggers},
+                )
+
+            if risk_result["should_block"]:
+                transaction.mark_blocked("Операция заблокирована системой риск-анализа.")
+                self._log_error(transaction, transaction.failure_reason)
+                self._log_audit(
+                    level=AuditLevel.CRITICAL,
+                    event_type="transaction_blocked",
+                    message="Операция заблокирована как опасная.",
+                    transaction=transaction,
+                    risk_level=risk_level,
+                    extra_metadata={"triggers": triggers},
+                )
+                return False
+
         transaction.mark_processing()
 
         try:
@@ -235,6 +319,13 @@ class TransactionProcessor:
 
             transaction.mark_completed()
             self._processed_transactions.append(transaction)
+
+            self._log_audit(
+                level=AuditLevel.INFO,
+                event_type="transaction_completed",
+                message="Транзакция успешно выполнена.",
+                transaction=transaction,
+            )
             return True
 
         except Exception as error:
@@ -247,6 +338,12 @@ class TransactionProcessor:
             else:
                 transaction.mark_failed(str(error))
 
+            self._log_audit(
+                level=AuditLevel.ERROR,
+                event_type="transaction_failed",
+                message=str(error),
+                transaction=transaction,
+            )
             return False
 
     def _process_deposit(self, transaction: Transaction) -> None:
@@ -334,7 +431,9 @@ class TransactionProcessor:
                 break
 
             success = self.process_transaction(transaction)
-            processed.append(transaction)
+
+            if transaction.status != TransactionStatus.CANCELLED:
+                processed.append(transaction)
 
             if not success and transaction.status == TransactionStatus.DELAYED:
                 queue.add_transaction(transaction, priority=50)
