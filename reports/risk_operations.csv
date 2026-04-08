@@ -1,26 +1,26 @@
 timestamp,level,event_type,message,client_id,account_id,transaction_id,risk_level,metadata
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: night_operation,C003,3B5753FE,68D24767DC,medium,{'triggers': ['night_operation']}
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: large_amount, new_receiver",C002,D74A81CD,57104425CA,high,"{'triggers': ['large_amount', 'new_receiver']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C002,D74A81CD,57104425CA,high,"{'triggers': ['large_amount', 'new_receiver']}"
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: large_amount, night_operation",C003,3B5753FE,6F136C7971,high,"{'triggers': ['large_amount', 'night_operation']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C003,3B5753FE,6F136C7971,high,"{'triggers': ['large_amount', 'night_operation']}"
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C005,2FA7E9F1,1B7AA08F24,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C001,53A28053,F6DF65F521,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C001,4A68DC6F,351CB7B210,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C002,D74A81CD,71D4DB41D7,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C006,65EBF172,D8F639B848,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: frequent_operations,C001,53A28053,204D2FD6AB,medium,{'triggers': ['frequent_operations']}
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: frequent_operations, new_receiver",C001,53A28053,668EC104F4,high,"{'triggers': ['frequent_operations', 'new_receiver']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C001,53A28053,668EC104F4,high,"{'triggers': ['frequent_operations', 'new_receiver']}"
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: large_amount, frequent_operations, new_receiver, night_operation",C001,4A68DC6F,8AE8892F43,high,"{'triggers': ['large_amount', 'frequent_operations', 'new_receiver', 'night_operation']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C001,4A68DC6F,8AE8892F43,high,"{'triggers': ['large_amount', 'frequent_operations', 'new_receiver', 'night_operation']}"
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: frequent_operations, night_operation",C001,53A28053,9508AC7FDC,high,"{'triggers': ['frequent_operations', 'night_operation']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C001,53A28053,9508AC7FDC,high,"{'triggers': ['frequent_operations', 'night_operation']}"
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C005,2FA7E9F1,B7DAC00439,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C003,3B5753FE,96F5307442,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: large_amount,C003,117FA826,8F51219FDA,medium,{'triggers': ['large_amount']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: large_amount,C006,D8759E5C,44E73686EF,medium,{'triggers': ['large_amount']}
-2026-04-07T19:16:49,critical,risk_detected,"Обнаружен риск high: large_amount, new_receiver",C003,117FA826,50ECF020EC,high,"{'triggers': ['large_amount', 'new_receiver']}"
-2026-04-07T19:16:49,critical,transaction_blocked,Операция заблокирована как опасная.,C003,117FA826,50ECF020EC,high,"{'triggers': ['large_amount', 'new_receiver']}"
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: new_receiver,C006,65EBF172,9E5168C406,medium,{'triggers': ['new_receiver']}
-2026-04-07T19:16:49,warning,risk_detected,Обнаружен риск medium: frequent_operations,C005,2FA7E9F1,D5A622A0E6,medium,{'triggers': ['frequent_operations']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: night_operation,C003,ECBD55E0,2C741A39D4,medium,{'triggers': ['night_operation']}
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: large_amount, new_receiver",C002,7D01E1E1,23C374630B,high,"{'triggers': ['large_amount', 'new_receiver']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C002,7D01E1E1,23C374630B,high,"{'triggers': ['large_amount', 'new_receiver']}"
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: large_amount, night_operation",C003,ECBD55E0,13071D8F9C,high,"{'triggers': ['large_amount', 'night_operation']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C003,ECBD55E0,13071D8F9C,high,"{'triggers': ['large_amount', 'night_operation']}"
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C005,01FA5F89,41CFCA34FD,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C001,E004734C,8C37C734B4,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C001,E13F47A8,4D3F6A397E,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C002,7D01E1E1,2872F127D5,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C006,E5B5354D,662D217D84,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: frequent_operations,C001,E004734C,D221AED214,medium,{'triggers': ['frequent_operations']}
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: frequent_operations, new_receiver",C001,E004734C,141291A505,high,"{'triggers': ['frequent_operations', 'new_receiver']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C001,E004734C,141291A505,high,"{'triggers': ['frequent_operations', 'new_receiver']}"
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: large_amount, frequent_operations, new_receiver, night_operation",C001,E13F47A8,766313A015,high,"{'triggers': ['large_amount', 'frequent_operations', 'new_receiver', 'night_operation']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C001,E13F47A8,766313A015,high,"{'triggers': ['large_amount', 'frequent_operations', 'new_receiver', 'night_operation']}"
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: frequent_operations, night_operation",C001,E004734C,A71592CDF6,high,"{'triggers': ['frequent_operations', 'night_operation']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C001,E004734C,A71592CDF6,high,"{'triggers': ['frequent_operations', 'night_operation']}"
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C005,01FA5F89,5E1727FA9F,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C003,ECBD55E0,88735F1E4A,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: large_amount,C003,850A9A72,67A8EA7423,medium,{'triggers': ['large_amount']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: large_amount,C006,91D035C0,0CCCF6511D,medium,{'triggers': ['large_amount']}
+2026-04-08T10:26:43,critical,risk_detected,"Обнаружен риск high: large_amount, new_receiver",C003,850A9A72,4077E8BB13,high,"{'triggers': ['large_amount', 'new_receiver']}"
+2026-04-08T10:26:43,critical,transaction_blocked,Операция заблокирована как опасная.,C003,850A9A72,4077E8BB13,high,"{'triggers': ['large_amount', 'new_receiver']}"
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: new_receiver,C006,E5B5354D,E5F12DBA5B,medium,{'triggers': ['new_receiver']}
+2026-04-08T10:26:43,warning,risk_detected,Обнаружен риск medium: frequent_operations,C005,01FA5F89,B75DBA4197,medium,{'triggers': ['frequent_operations']}

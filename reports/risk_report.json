@@ -1,6 +1,6 @@
 {
     "report_type": "risk",
-    "generated_at": "2026-04-07T19:16:49",
+    "generated_at": "2026-04-08T10:26:43",
     "risk_statistics": {
         "medium": 13,
         "high": 12
@@ -9,7 +9,7 @@
     "blocked_transactions_count": 6,
     "blocked_transactions": [
         {
-            "transaction_id": "9508AC7FDC",
+            "transaction_id": "A71592CDF6",
             "type": "transfer_external",
             "amount": 120.0,
             "currency": "USD",
@@ -17,7 +17,7 @@
             "failure_reason": "Операция заблокирована системой риск-анализа."
         },
         {
-            "transaction_id": "668EC104F4",
+            "transaction_id": "141291A505",
             "type": "transfer_internal",
             "amount": 210.0,
             "currency": "USD",
@@ -25,7 +25,7 @@
             "failure_reason": "Операция заблокирована системой риск-анализа."
         },
         {
-            "transaction_id": "8AE8892F43",
+            "transaction_id": "766313A015",
             "type": "transfer_internal",
             "amount": 70000.0,
             "currency": "RUB",
@@ -33,7 +33,7 @@
             "failure_reason": "Операция заблокирована системой риск-анализа."
         },
         {
-            "transaction_id": "57104425CA",
+            "transaction_id": "23C374630B",
             "type": "transfer_internal",
             "amount": 50000.0,
             "currency": "EUR",
@@ -41,7 +41,7 @@
             "failure_reason": "Операция заблокирована системой риск-анализа."
         },
         {
-            "transaction_id": "6F136C7971",
+            "transaction_id": "13071D8F9C",
             "type": "transfer_external",
             "amount": 65000.0,
             "currency": "RUB",
@@ -49,7 +49,7 @@
             "failure_reason": "Операция заблокирована системой риск-анализа."
         },
         {
-            "transaction_id": "50ECF020EC",
+            "transaction_id": "4077E8BB13",
             "type": "transfer_internal",
             "amount": 100000.0,
             "currency": "KZT",
@@ -59,13 +59,13 @@
     ],
     "suspicious_operations": [
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: night_operation",
             "client_id": "C003",
-            "account_id": "3B5753FE",
-            "transaction_id": "68D24767DC",
+            "account_id": "ECBD55E0",
+            "transaction_id": "2C741A39D4",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -74,13 +74,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: large_amount, new_receiver",
             "client_id": "C002",
-            "account_id": "D74A81CD",
-            "transaction_id": "57104425CA",
+            "account_id": "7D01E1E1",
+            "transaction_id": "23C374630B",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -90,13 +90,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C002",
-            "account_id": "D74A81CD",
-            "transaction_id": "57104425CA",
+            "account_id": "7D01E1E1",
+            "transaction_id": "23C374630B",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -106,13 +106,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: large_amount, night_operation",
             "client_id": "C003",
-            "account_id": "3B5753FE",
-            "transaction_id": "6F136C7971",
+            "account_id": "ECBD55E0",
+            "transaction_id": "13071D8F9C",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -122,13 +122,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C003",
-            "account_id": "3B5753FE",
-            "transaction_id": "6F136C7971",
+            "account_id": "ECBD55E0",
+            "transaction_id": "13071D8F9C",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -138,13 +138,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C005",
-            "account_id": "2FA7E9F1",
-            "transaction_id": "1B7AA08F24",
+            "account_id": "01FA5F89",
+            "transaction_id": "41CFCA34FD",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -153,13 +153,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "F6DF65F521",
+            "account_id": "E004734C",
+            "transaction_id": "8C37C734B4",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -168,13 +168,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "351CB7B210",
+            "account_id": "E13F47A8",
+            "transaction_id": "4D3F6A397E",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -183,13 +183,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C002",
-            "account_id": "D74A81CD",
-            "transaction_id": "71D4DB41D7",
+            "account_id": "7D01E1E1",
+            "transaction_id": "2872F127D5",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -198,13 +198,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C006",
-            "account_id": "65EBF172",
-            "transaction_id": "D8F639B848",
+            "account_id": "E5B5354D",
+            "transaction_id": "662D217D84",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -213,13 +213,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: frequent_operations",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "204D2FD6AB",
+            "account_id": "E004734C",
+            "transaction_id": "D221AED214",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -228,13 +228,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: frequent_operations, new_receiver",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "668EC104F4",
+            "account_id": "E004734C",
+            "transaction_id": "141291A505",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -244,13 +244,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "668EC104F4",
+            "account_id": "E004734C",
+            "transaction_id": "141291A505",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -260,13 +260,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: large_amount, frequent_operations, new_receiver, night_operation",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "8AE8892F43",
+            "account_id": "E13F47A8",
+            "transaction_id": "766313A015",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -278,13 +278,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "8AE8892F43",
+            "account_id": "E13F47A8",
+            "transaction_id": "766313A015",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -296,13 +296,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: frequent_operations, night_operation",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "9508AC7FDC",
+            "account_id": "E004734C",
+            "transaction_id": "A71592CDF6",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -312,13 +312,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "9508AC7FDC",
+            "account_id": "E004734C",
+            "transaction_id": "A71592CDF6",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -328,13 +328,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C005",
-            "account_id": "2FA7E9F1",
-            "transaction_id": "B7DAC00439",
+            "account_id": "01FA5F89",
+            "transaction_id": "5E1727FA9F",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -343,13 +343,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C003",
-            "account_id": "3B5753FE",
-            "transaction_id": "96F5307442",
+            "account_id": "ECBD55E0",
+            "transaction_id": "88735F1E4A",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -358,13 +358,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: large_amount",
             "client_id": "C003",
-            "account_id": "117FA826",
-            "transaction_id": "8F51219FDA",
+            "account_id": "850A9A72",
+            "transaction_id": "67A8EA7423",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -373,13 +373,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: large_amount",
             "client_id": "C006",
-            "account_id": "D8759E5C",
-            "transaction_id": "44E73686EF",
+            "account_id": "91D035C0",
+            "transaction_id": "0CCCF6511D",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -388,13 +388,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: large_amount, new_receiver",
             "client_id": "C003",
-            "account_id": "117FA826",
-            "transaction_id": "50ECF020EC",
+            "account_id": "850A9A72",
+            "transaction_id": "4077E8BB13",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -404,13 +404,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C003",
-            "account_id": "117FA826",
-            "transaction_id": "50ECF020EC",
+            "account_id": "850A9A72",
+            "transaction_id": "4077E8BB13",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -420,13 +420,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C006",
-            "account_id": "65EBF172",
-            "transaction_id": "9E5168C406",
+            "account_id": "E5B5354D",
+            "transaction_id": "E5F12DBA5B",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -435,13 +435,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: frequent_operations",
             "client_id": "C005",
-            "account_id": "2FA7E9F1",
-            "transaction_id": "D5A622A0E6",
+            "account_id": "01FA5F89",
+            "transaction_id": "B75DBA4197",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [

@@ -6,8 +6,6 @@ from enum import Enum
 from typing import Any
 
 from src.models import (
-    AccountClosedError,
-    AccountFrozenError,
     AccountStatus,
     BankAccount,
     InvalidOperationError,
@@ -111,6 +109,23 @@ class Bank:
                 "timestamp": datetime.now().isoformat(timespec="seconds"),
             }
         )
+
+    def _convert_balance(
+        self,
+        amount: float,
+        from_currency: str,
+        to_currency: str,
+        exchange_rates: dict[tuple[str, str], float],
+    ) -> float:
+        if from_currency == to_currency:
+            return round(amount, 2)
+
+        rate = exchange_rates.get((from_currency, to_currency))
+        if rate is None:
+            raise InvalidOperationError(
+                f"Нет курса конвертации {from_currency} -> {to_currency}."
+            )
+        return round(amount * rate, 2)
 
     def open_account(
         self,
@@ -244,6 +259,24 @@ class Bank:
                 total += account.balance
         return round(total, 2)
 
+    def get_total_balance_converted(
+        self,
+        base_currency: str,
+        exchange_rates: dict[tuple[str, str], float],
+    ) -> float:
+        total = 0.0
+
+        for account in self._accounts.values():
+            if account.status != AccountStatus.CLOSED:
+                total += self._convert_balance(
+                    amount=account.balance,
+                    from_currency=account.currency.value,
+                    to_currency=base_currency,
+                    exchange_rates=exchange_rates,
+                )
+
+        return round(total, 2)
+
     def get_clients_ranking(self) -> list[dict[str, Any]]:
         ranking: list[dict[str, Any]] = []
 
@@ -261,6 +294,40 @@ class Bank:
                     "status": client.status.value,
                     "total_balance": round(client_total, 2),
                     "accounts_count": len(client.account_ids),
+                }
+            )
+
+        ranking.sort(key=lambda item: item["total_balance"], reverse=True)
+        return ranking
+
+    def get_clients_ranking_converted(
+        self,
+        base_currency: str,
+        exchange_rates: dict[tuple[str, str], float],
+    ) -> list[dict[str, Any]]:
+        ranking: list[dict[str, Any]] = []
+
+        for client in self._clients.values():
+            client_total = 0.0
+
+            for account_id in client.account_ids:
+                account = self._accounts.get(account_id)
+                if account is not None and account.status != AccountStatus.CLOSED:
+                    client_total += self._convert_balance(
+                        amount=account.balance,
+                        from_currency=account.currency.value,
+                        to_currency=base_currency,
+                        exchange_rates=exchange_rates,
+                    )
+
+            ranking.append(
+                {
+                    "client_id": client.client_id,
+                    "full_name": client.full_name,
+                    "status": client.status.value,
+                    "total_balance": round(client_total, 2),
+                    "accounts_count": len(client.account_ids),
+                    "base_currency": base_currency,
                 }
             )
 

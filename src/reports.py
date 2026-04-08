@@ -100,8 +100,15 @@ class ReportBuilder:
         }
         return report
 
-    def build_bank_report(self) -> dict[str, Any]:
-        ranking = self._bank.get_clients_ranking()
+    def build_bank_report(
+        self,
+        base_currency: str = "RUB",
+        exchange_rates: dict[tuple[str, str], float] | None = None,
+    ) -> dict[str, Any]:
+        if exchange_rates is None:
+            raise ValueError("Для банкового отчёта нужен exchange_rates для мультивалютной агрегации.")
+
+        ranking = self._bank.get_clients_ranking_converted(base_currency, exchange_rates)
         status_counter = Counter(tx.status.value for tx in self._transactions)
         type_counter = Counter(tx.transaction_type.value for tx in self._transactions)
 
@@ -113,7 +120,9 @@ class ReportBuilder:
             "report_type": "bank",
             "generated_at": datetime.now().isoformat(timespec="seconds"),
             "bank_name": self._bank.name,
+            "base_currency": base_currency,
             "total_balance_raw": self._bank.get_total_balance(),
+            "total_balance_converted": self._bank.get_total_balance_converted(base_currency, exchange_rates),
             "clients_count": len(ranking),
             "accounts_count": len(accounts),
             "top_clients": ranking[:3],
@@ -121,7 +130,23 @@ class ReportBuilder:
                 "total_transactions": len(self._transactions),
                 "by_status": dict(status_counter),
                 "by_type": dict(type_counter),
-                "total_commissions": round(sum(tx.commission for tx in self._transactions), 2),
+                "total_commissions": round(
+                    sum(
+                        tx.commission
+                        for tx in self._transactions
+                        if tx.status == TransactionStatus.COMPLETED
+                    ),
+                    2,
+                ),
+                "successful_external_commissions": round(
+                    sum(
+                        tx.commission
+                        for tx in self._transactions
+                        if tx.status == TransactionStatus.COMPLETED
+                        and tx.transaction_type == TransactionType.TRANSFER_EXTERNAL
+                    ),
+                    2,
+                ),
             },
             "accounts_statistics": {
                 "by_currency": dict(currencies_counter),
@@ -199,7 +224,9 @@ class ReportBuilder:
 
         elif report_type == "bank":
             lines.append(f"BANK NAME: {report_data['bank_name']}")
+            lines.append(f"BASE CURRENCY: {report_data['base_currency']}")
             lines.append(f"TOTAL BALANCE RAW: {report_data['total_balance_raw']}")
+            lines.append(f"TOTAL BALANCE CONVERTED: {report_data['total_balance_converted']}")
             lines.append(f"CLIENTS COUNT: {report_data['clients_count']}")
             lines.append(f"ACCOUNTS COUNT: {report_data['accounts_count']}")
             lines.append("")
@@ -208,7 +235,7 @@ class ReportBuilder:
             for item in report_data["top_clients"]:
                 lines.append(
                     f"  - {item['full_name']} ({item['client_id']}) | "
-                    f"balance={item['total_balance']} | accounts={item['accounts_count']}"
+                    f"balance={item['total_balance']} {item['base_currency']} | accounts={item['accounts_count']}"
                 )
 
             lines.append("")
@@ -319,13 +346,18 @@ class ReportBuilder:
             y_values: list[float] = []
 
             for tx in completed_transactions:
-                if tx.transaction_type == TransactionType.DEPOSIT:
-                    running_total += tx.amount
-                elif tx.transaction_type in {TransactionType.WITHDRAW, TransactionType.TRANSFER_EXTERNAL}:
-                    running_total -= (tx.amount + tx.commission)
-                elif tx.transaction_type == TransactionType.TRANSFER_INTERNAL:
-                    running_total += tx.amount
+                delta = 0.0
 
+                if tx.transaction_type == TransactionType.DEPOSIT:
+                    delta = tx.amount
+                elif tx.transaction_type == TransactionType.WITHDRAW:
+                    delta = -tx.amount
+                elif tx.transaction_type == TransactionType.TRANSFER_EXTERNAL:
+                    delta = -(tx.amount + tx.commission)
+                elif tx.transaction_type == TransactionType.TRANSFER_INTERNAL:
+                    delta = 0.0
+
+                running_total += delta
                 x_values.append(tx.created_at.strftime("%H:%M"))
                 y_values.append(round(running_total, 2))
 

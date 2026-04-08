@@ -1,15 +1,15 @@
 transaction_id,type,amount,currency,sender_account_id,receiver_account_id,status,commission,failure_reason,created_at
-8AE8892F43,transfer_internal,70000.0,RUB,4A68DC6F,3B5753FE,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T01:10:00
-9508AC7FDC,transfer_external,120.0,USD,53A28053,,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T02:15:00
-02C39F7C1C,deposit,5000.0,RUB,,4A68DC6F,completed,0.0,,2026-04-07T11:00:00
-9F3C514703,withdraw,2000.0,RUB,4A68DC6F,,completed,0.0,,2026-04-07T11:02:00
-204D2FD6AB,transfer_internal,150.0,USD,53A28053,4A68DC6F,completed,0.0,,2026-04-07T11:03:00
-F6DF65F521,transfer_internal,180.0,USD,53A28053,4A68DC6F,completed,0.0,,2026-04-07T11:15:00
-7D02D99E06,transfer_internal,190.0,USD,53A28053,4A68DC6F,completed,0.0,,2026-04-07T11:17:00
-668EC104F4,transfer_internal,210.0,USD,53A28053,2FA7E9F1,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T11:18:00
-B7DAC00439,transfer_internal,800.0,RUB,2FA7E9F1,4A68DC6F,completed,0.0,,2026-04-07T11:26:00
-E5A37F9A0C,transfer_internal,900.0,RUB,2FA7E9F1,4A68DC6F,completed,0.0,,2026-04-07T11:27:00
-D5A622A0E6,transfer_internal,1000.0,RUB,2FA7E9F1,4A68DC6F,completed,0.0,,2026-04-07T11:28:00
-78D2FBC8B8,transfer_external,20000.0,USD,53A28053,,failed,310.0,"Недостаточно средств с учётом овердрафта: требуется 20325.00, доступно 10435.00.",2026-04-07T11:33:00
-EE3A92D127,deposit,750.0,RUB,,4A68DC6F,completed,0.0,,2026-04-07T11:34:00
-351CB7B210,transfer_internal,500.0,RUB,4A68DC6F,D8759E5C,completed,0.0,,2026-04-07T11:35:00
+766313A015,transfer_internal,70000.0,RUB,E13F47A8,ECBD55E0,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T01:10:00
+A71592CDF6,transfer_external,120.0,USD,E004734C,,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T02:15:00
+C73F91008F,deposit,5000.0,RUB,,E13F47A8,completed,0.0,,2026-04-07T11:00:00
+D49C6B4AA6,withdraw,2000.0,RUB,E13F47A8,,completed,0.0,,2026-04-07T11:02:00
+D221AED214,transfer_internal,150.0,USD,E004734C,E13F47A8,completed,0.0,,2026-04-07T11:03:00
+8C37C734B4,transfer_internal,180.0,USD,E004734C,E13F47A8,completed,0.0,,2026-04-07T11:15:00
+7B3E9D4205,transfer_internal,190.0,USD,E004734C,E13F47A8,completed,0.0,,2026-04-07T11:17:00
+141291A505,transfer_internal,210.0,USD,E004734C,01FA5F89,blocked,0.0,Операция заблокирована системой риск-анализа.,2026-04-07T11:18:00
+5E1727FA9F,transfer_internal,800.0,RUB,01FA5F89,E13F47A8,completed,0.0,,2026-04-07T11:26:00
+1A08E857ED,transfer_internal,900.0,RUB,01FA5F89,E13F47A8,completed,0.0,,2026-04-07T11:27:00
+B75DBA4197,transfer_internal,1000.0,RUB,01FA5F89,E13F47A8,completed,0.0,,2026-04-07T11:28:00
+5078441387,transfer_external,20000.0,USD,E004734C,,failed,0.0,"Недостаточно средств с учётом овердрафта: требуется 20325.00, доступно 10435.00.",2026-04-07T11:33:00
+0DF352EAFC,deposit,750.0,RUB,,E13F47A8,completed,0.0,,2026-04-07T11:34:00
+4D3F6A397E,transfer_internal,500.0,RUB,E13F47A8,91D035C0,completed,0.0,,2026-04-07T11:35:00

@@ -15,12 +15,13 @@ class TestReportBuilder(unittest.TestCase):
                 elif path.is_dir():
                     path.rmdir()
 
-        bank, clients, accounts, transactions, audit_log = create_demo_data()
+        bank, clients, accounts, transactions, audit_log, exchange_rates = create_demo_data()
         self.bank = bank
         self.clients = clients
         self.accounts = accounts
         self.transactions = transactions
         self.audit_log = audit_log
+        self.exchange_rates = exchange_rates
         self.builder = ReportBuilder(
             bank=self.bank,
             transactions=self.transactions,
@@ -43,10 +44,15 @@ class TestReportBuilder(unittest.TestCase):
         self.assertGreaterEqual(report["client"]["accounts_count"], 1)
 
     def test_build_bank_report(self) -> None:
-        report = self.builder.build_bank_report()
+        report = self.builder.build_bank_report(
+            base_currency="RUB",
+            exchange_rates=self.exchange_rates,
+        )
         self.assertEqual(report["report_type"], "bank")
         self.assertEqual(report["bank_name"], "Base OOP Bank")
         self.assertGreaterEqual(report["clients_count"], 1)
+        self.assertEqual(report["base_currency"], "RUB")
+        self.assertIn("total_balance_converted", report)
 
     def test_build_risk_report(self) -> None:
         report = self.builder.build_risk_report()
@@ -54,12 +60,18 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn("suspicious_operations_count", report)
 
     def test_build_text_report(self) -> None:
-        report = self.builder.build_bank_report()
+        report = self.builder.build_bank_report(
+            base_currency="RUB",
+            exchange_rates=self.exchange_rates,
+        )
         text = self.builder.build_text_report(report)
         self.assertIn("REPORT TYPE: BANK", text)
 
     def test_export_to_json(self) -> None:
-        report = self.builder.build_bank_report()
+        report = self.builder.build_bank_report(
+            base_currency="RUB",
+            exchange_rates=self.exchange_rates,
+        )
         file_path = self.builder.export_to_json(report, "bank_report_test.json")
         self.assertTrue(file_path.exists())
         self.assertTrue(file_path.read_text(encoding="utf-8").strip().startswith("{"))
@@ -83,6 +95,17 @@ class TestReportBuilder(unittest.TestCase):
         self.assertGreaterEqual(len(chart_paths), 3)
         for path in chart_paths:
             self.assertTrue(path.exists())
+
+    def test_total_commissions_use_only_completed_transactions(self) -> None:
+        report = self.builder.build_bank_report(
+            base_currency="RUB",
+            exchange_rates=self.exchange_rates,
+        )
+        expected = round(
+            sum(tx.commission for tx in self.transactions if tx.status.value == "completed"),
+            2,
+        )
+        self.assertEqual(report["transactions_statistics"]["total_commissions"], expected)
 
 
 if __name__ == "__main__":

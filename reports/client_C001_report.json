@@ -1,6 +1,6 @@
 {
     "report_type": "client",
-    "generated_at": "2026-04-07T19:16:49",
+    "generated_at": "2026-04-08T10:26:43",
     "client": {
         "client_id": "C001",
         "full_name": "Иван Петров",
@@ -14,7 +14,7 @@
     "accounts": [
         {
             "account_type": "SavingsAccount",
-            "account_id": "4A68DC6F",
+            "account_id": "E13F47A8",
             "owner_name": "Иван Петров",
             "owner_client_id": "C001",
             "status": "active",
@@ -25,7 +25,7 @@
         },
         {
             "account_type": "PremiumAccount",
-            "account_id": "53A28053",
+            "account_id": "E004734C",
             "owner_name": "Иван Петров",
             "owner_client_id": "C001",
             "status": "active",
@@ -45,23 +45,23 @@
     },
     "transactions": [
         {
-            "transaction_id": "8AE8892F43",
+            "transaction_id": "766313A015",
             "type": "transfer_internal",
             "amount": 70000.0,
             "currency": "RUB",
-            "sender_account_id": "4A68DC6F",
-            "receiver_account_id": "3B5753FE",
+            "sender_account_id": "E13F47A8",
+            "receiver_account_id": "ECBD55E0",
             "status": "blocked",
             "commission": 0.0,
             "failure_reason": "Операция заблокирована системой риск-анализа.",
             "created_at": "2026-04-07T01:10:00"
         },
         {
-            "transaction_id": "9508AC7FDC",
+            "transaction_id": "A71592CDF6",
             "type": "transfer_external",
             "amount": 120.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
+            "sender_account_id": "E004734C",
             "receiver_account_id": null,
             "status": "blocked",
             "commission": 0.0,
@@ -69,23 +69,23 @@
             "created_at": "2026-04-07T02:15:00"
         },
         {
-            "transaction_id": "02C39F7C1C",
+            "transaction_id": "C73F91008F",
             "type": "deposit",
             "amount": 5000.0,
             "currency": "RUB",
             "sender_account_id": null,
-            "receiver_account_id": "4A68DC6F",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:00:00"
         },
         {
-            "transaction_id": "9F3C514703",
+            "transaction_id": "D49C6B4AA6",
             "type": "withdraw",
             "amount": 2000.0,
             "currency": "RUB",
-            "sender_account_id": "4A68DC6F",
+            "sender_account_id": "E13F47A8",
             "receiver_account_id": null,
             "status": "completed",
             "commission": 0.0,
@@ -93,120 +93,120 @@
             "created_at": "2026-04-07T11:02:00"
         },
         {
-            "transaction_id": "204D2FD6AB",
+            "transaction_id": "D221AED214",
             "type": "transfer_internal",
             "amount": 150.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "E004734C",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:03:00"
         },
         {
-            "transaction_id": "F6DF65F521",
+            "transaction_id": "8C37C734B4",
             "type": "transfer_internal",
             "amount": 180.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "E004734C",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:15:00"
         },
         {
-            "transaction_id": "7D02D99E06",
+            "transaction_id": "7B3E9D4205",
             "type": "transfer_internal",
             "amount": 190.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "E004734C",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:17:00"
         },
         {
-            "transaction_id": "668EC104F4",
+            "transaction_id": "141291A505",
             "type": "transfer_internal",
             "amount": 210.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
-            "receiver_account_id": "2FA7E9F1",
+            "sender_account_id": "E004734C",
+            "receiver_account_id": "01FA5F89",
             "status": "blocked",
             "commission": 0.0,
             "failure_reason": "Операция заблокирована системой риск-анализа.",
             "created_at": "2026-04-07T11:18:00"
         },
         {
-            "transaction_id": "B7DAC00439",
+            "transaction_id": "5E1727FA9F",
             "type": "transfer_internal",
             "amount": 800.0,
             "currency": "RUB",
-            "sender_account_id": "2FA7E9F1",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "01FA5F89",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:26:00"
         },
         {
-            "transaction_id": "E5A37F9A0C",
+            "transaction_id": "1A08E857ED",
             "type": "transfer_internal",
             "amount": 900.0,
             "currency": "RUB",
-            "sender_account_id": "2FA7E9F1",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "01FA5F89",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:27:00"
         },
         {
-            "transaction_id": "D5A622A0E6",
+            "transaction_id": "B75DBA4197",
             "type": "transfer_internal",
             "amount": 1000.0,
             "currency": "RUB",
-            "sender_account_id": "2FA7E9F1",
-            "receiver_account_id": "4A68DC6F",
+            "sender_account_id": "01FA5F89",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:28:00"
         },
         {
-            "transaction_id": "78D2FBC8B8",
+            "transaction_id": "5078441387",
             "type": "transfer_external",
             "amount": 20000.0,
             "currency": "USD",
-            "sender_account_id": "53A28053",
+            "sender_account_id": "E004734C",
             "receiver_account_id": null,
             "status": "failed",
-            "commission": 310.0,
+            "commission": 0.0,
             "failure_reason": "Недостаточно средств с учётом овердрафта: требуется 20325.00, доступно 10435.00.",
             "created_at": "2026-04-07T11:33:00"
         },
         {
-            "transaction_id": "EE3A92D127",
+            "transaction_id": "0DF352EAFC",
             "type": "deposit",
             "amount": 750.0,
             "currency": "RUB",
             "sender_account_id": null,
-            "receiver_account_id": "4A68DC6F",
+            "receiver_account_id": "E13F47A8",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
             "created_at": "2026-04-07T11:34:00"
         },
         {
-            "transaction_id": "351CB7B210",
+            "transaction_id": "4D3F6A397E",
             "type": "transfer_internal",
             "amount": 500.0,
             "currency": "RUB",
-            "sender_account_id": "4A68DC6F",
-            "receiver_account_id": "D8759E5C",
+            "sender_account_id": "E13F47A8",
+            "receiver_account_id": "91D035C0",
             "status": "completed",
             "commission": 0.0,
             "failure_reason": "",
@@ -223,13 +223,13 @@
     },
     "suspicious_operations": [
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "F6DF65F521",
+            "account_id": "E004734C",
+            "transaction_id": "8C37C734B4",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -238,13 +238,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: new_receiver",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "351CB7B210",
+            "account_id": "E13F47A8",
+            "transaction_id": "4D3F6A397E",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -253,13 +253,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "warning",
             "event_type": "risk_detected",
             "message": "Обнаружен риск medium: frequent_operations",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "204D2FD6AB",
+            "account_id": "E004734C",
+            "transaction_id": "D221AED214",
             "risk_level": "medium",
             "metadata": {
                 "triggers": [
@@ -268,13 +268,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: frequent_operations, new_receiver",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "668EC104F4",
+            "account_id": "E004734C",
+            "transaction_id": "141291A505",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -284,13 +284,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "668EC104F4",
+            "account_id": "E004734C",
+            "transaction_id": "141291A505",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -300,13 +300,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: large_amount, frequent_operations, new_receiver, night_operation",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "8AE8892F43",
+            "account_id": "E13F47A8",
+            "transaction_id": "766313A015",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -318,13 +318,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "4A68DC6F",
-            "transaction_id": "8AE8892F43",
+            "account_id": "E13F47A8",
+            "transaction_id": "766313A015",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -336,13 +336,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "risk_detected",
             "message": "Обнаружен риск high: frequent_operations, night_operation",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "9508AC7FDC",
+            "account_id": "E004734C",
+            "transaction_id": "A71592CDF6",
             "risk_level": "high",
             "metadata": {
                 "triggers": [
@@ -352,13 +352,13 @@
             }
         },
         {
-            "timestamp": "2026-04-07T19:16:49",
+            "timestamp": "2026-04-08T10:26:43",
             "level": "critical",
             "event_type": "transaction_blocked",
             "message": "Операция заблокирована как опасная.",
             "client_id": "C001",
-            "account_id": "53A28053",
-            "transaction_id": "9508AC7FDC",
+            "account_id": "E004734C",
+            "transaction_id": "A71592CDF6",
             "risk_level": "high",
             "metadata": {
                 "triggers": [

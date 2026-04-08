@@ -205,6 +205,27 @@ class TestTransactionProcessor(unittest.TestCase):
         self.assertFalse(second_result)
         self.assertEqual(tx.status, TransactionStatus.FAILED)
 
+    def test_delayed_retry_is_not_processed_immediately(self) -> None:
+        queue = TransactionQueue()
+        tx = Transaction(
+            transaction_type=TransactionType.DEPOSIT,
+            amount=100.0,
+            currency=Currency.EUR,
+            receiver_account_id=self.acc1.account_id,
+            max_retries=2,
+            retry_delay_seconds=60,
+        )
+        queue.add_transaction(tx, priority=1)
+
+        now = datetime.now()
+        processed_first = self.processor.process_queue(queue, now=now)
+
+        self.assertEqual(len(processed_first), 1)
+        self.assertEqual(tx.status, TransactionStatus.DELAYED)
+        self.assertTrue(queue.has_pending())
+        self.assertIsNotNone(tx.scheduled_at)
+        self.assertGreater(tx.scheduled_at, now)
+
     def test_cancelled_transaction_not_processed(self) -> None:
         queue = TransactionQueue()
         tx = Transaction(

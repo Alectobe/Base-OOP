@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from heapq import heappop, heappush
 from itertools import count
@@ -48,6 +48,7 @@ class Transaction:
     failure_reason: str = ""
     scheduled_at: datetime | None = None
     max_retries: int = 2
+    retry_delay_seconds: int = 60
     transaction_id: str = field(default_factory=lambda: uuid4().hex[:10].upper())
     created_at: datetime = field(default_factory=datetime.now)
     updated_at: datetime = field(default_factory=datetime.now)
@@ -66,6 +67,8 @@ class Transaction:
             raise ValueError("commission должен быть неотрицательным числом.")
         if not isinstance(self.max_retries, int) or self.max_retries < 0:
             raise ValueError("max_retries должен быть целым числом >= 0.")
+        if not isinstance(self.retry_delay_seconds, int) or self.retry_delay_seconds <= 0:
+            raise ValueError("retry_delay_seconds должен быть целым числом > 0.")
 
         self.amount = float(self.amount)
         self.commission = float(self.commission)
@@ -94,8 +97,12 @@ class Transaction:
         self.failure_reason = reason
         self.updated_at = datetime.now()
 
-    def mark_delayed(self) -> None:
+    def mark_delayed(self, reason: str, base_time: datetime | None = None) -> None:
+        reference_time = base_time or datetime.now()
+        delay_seconds = self.retry_delay_seconds * self.retries_used
         self.status = TransactionStatus.DELAYED
+        self.failure_reason = reason
+        self.scheduled_at = reference_time + timedelta(seconds=delay_seconds)
         self.updated_at = datetime.now()
 
     def mark_blocked(self, reason: str) -> None:
@@ -191,6 +198,10 @@ class TransactionProcessor:
     @property
     def processed_transactions(self) -> list[Transaction]:
         return self._processed_transactions.copy()
+
+    @property
+    def exchange_rates(self) -> dict[tuple[str, str], float]:
+        return self._exchange_rates.copy()
 
     def _log_audit(
         self,
@@ -333,8 +344,7 @@ class TransactionProcessor:
             self._log_error(transaction, str(error))
 
             if transaction.retries_used <= transaction.max_retries:
-                transaction.mark_delayed()
-                transaction.failure_reason = str(error)
+                transaction.mark_delayed(str(error))
             else:
                 transaction.mark_failed(str(error))
 
@@ -413,7 +423,6 @@ class TransactionProcessor:
             sender.currency,
         )
         commission = self._calculate_external_commission(amount_in_sender_currency)
-        transaction.commission = commission
 
         if not isinstance(sender, PremiumAccount) and sender.balance - (amount_in_sender_currency + commission) < 0:
             raise InvalidOperationError(
@@ -421,12 +430,14 @@ class TransactionProcessor:
             )
 
         sender.withdraw(amount_in_sender_currency + commission)
+        transaction.commission = commission
 
     def process_queue(self, queue: TransactionQueue, now: datetime | None = None) -> list[Transaction]:
         processed: list[Transaction] = []
+        current_now = now or datetime.now()
 
         while queue.has_pending():
-            transaction = queue.pop_ready_transaction(now=now)
+            transaction = queue.pop_ready_transaction(now=current_now)
             if transaction is None:
                 break
 

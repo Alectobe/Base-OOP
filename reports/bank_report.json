@@ -1,31 +1,36 @@
 {
     "report_type": "bank",
-    "generated_at": "2026-04-07T19:16:49",
+    "generated_at": "2026-04-08T10:26:43",
     "bank_name": "Base OOP Bank",
+    "base_currency": "RUB",
     "total_balance_raw": 1184088.75,
+    "total_balance_converted": 6398017.0,
     "clients_count": 6,
     "accounts_count": 12,
     "top_clients": [
         {
-            "client_id": "C003",
-            "full_name": "Олег Сидоров",
+            "client_id": "C002",
+            "full_name": "Анна Смирнова",
             "status": "active",
-            "total_balance": 892164.5,
-            "accounts_count": 2
+            "total_balance": 2544300.0,
+            "accounts_count": 2,
+            "base_currency": "RUB"
         },
         {
-            "client_id": "C001",
-            "full_name": "Иван Петров",
+            "client_id": "C006",
+            "full_name": "Елена Орлова",
             "status": "active",
-            "total_balance": 176185.0,
-            "accounts_count": 2
+            "total_balance": 1588100.0,
+            "accounts_count": 2,
+            "base_currency": "RUB"
         },
         {
-            "client_id": "C005",
-            "full_name": "Дмитрий Волков",
+            "client_id": "C004",
+            "full_name": "Мария Кузнецова",
             "status": "active",
-            "total_balance": 44220.0,
-            "accounts_count": 2
+            "total_balance": 1322032.5,
+            "accounts_count": 2,
+            "base_currency": "RUB"
         }
     ],
     "transactions_statistics": {
@@ -33,7 +38,8 @@
         "by_status": {
             "completed": 25,
             "blocked": 6,
-            "failed": 4,
+            "delayed": 1,
+            "failed": 3,
             "cancelled": 1
         },
         "by_type": {
@@ -42,7 +48,8 @@
             "transfer_internal": 16,
             "transfer_external": 6
         },
-        "total_commissions": 381.25
+        "total_commissions": 71.25,
+        "successful_external_commissions": 71.25
     },
     "accounts_statistics": {
         "by_currency": {
@@ -59,12 +66,12 @@
         }
     },
     "audit_statistics": {
-        "total_errors": 18,
+        "total_errors": 16,
         "critical_errors": 12,
         "by_event_type": {
             "risk_detected": 6,
             "transaction_blocked": 6,
-            "transaction_failed": 6
+            "transaction_failed": 4
         }
     }
 }

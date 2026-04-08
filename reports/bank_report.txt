@@ -1,27 +1,30 @@
 REPORT TYPE: BANK
-GENERATED AT: 2026-04-07T19:16:49
+GENERATED AT: 2026-04-08T10:26:43
 ======================================================================
 BANK NAME: Base OOP Bank
+BASE CURRENCY: RUB
 TOTAL BALANCE RAW: 1184088.75
+TOTAL BALANCE CONVERTED: 6398017.0
 CLIENTS COUNT: 6
 ACCOUNTS COUNT: 12
 
 TOP CLIENTS:
-  - Олег Сидоров (C003) | balance=892164.5 | accounts=2
-  - Иван Петров (C001) | balance=176185.0 | accounts=2
-  - Дмитрий Волков (C005) | balance=44220.0 | accounts=2
+  - Анна Смирнова (C002) | balance=2544300.0 RUB | accounts=2
+  - Елена Орлова (C006) | balance=1588100.0 RUB | accounts=2
+  - Мария Кузнецова (C004) | balance=1322032.5 RUB | accounts=2
 
 TRANSACTIONS STATISTICS:
   total_transactions: 36
-  by_status: {'completed': 25, 'blocked': 6, 'failed': 4, 'cancelled': 1}
+  by_status: {'completed': 25, 'blocked': 6, 'delayed': 1, 'failed': 3, 'cancelled': 1}
   by_type: {'deposit': 8, 'withdraw': 6, 'transfer_internal': 16, 'transfer_external': 6}
-  total_commissions: 381.25
+  total_commissions: 71.25
+  successful_external_commissions: 71.25
 
 ACCOUNTS STATISTICS:
   by_currency: {'RUB': 4, 'USD': 4, 'EUR': 2, 'KZT': 1, 'CNY': 1}
   by_type: {'SavingsAccount': 5, 'PremiumAccount': 4, 'InvestmentAccount': 3}
 
 AUDIT STATISTICS:
-  total_errors: 18
+  total_errors: 16
   critical_errors: 12
-  by_event_type: {'risk_detected': 6, 'transaction_blocked': 6, 'transaction_failed': 6}
+  by_event_type: {'risk_detected': 6, 'transaction_blocked': 6, 'transaction_failed': 4}

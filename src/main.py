@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, time
 
-from src.audit import AuditLog, RiskAnalyzer, RiskLevel
+from src.audit import AuditLog, RiskAnalyzer
 from src.bank import Bank, Client
 from src.models import Currency, InvestmentAccount, PremiumAccount, SavingsAccount
 from src.reports import ReportBuilder
@@ -10,7 +10,6 @@ from src.transactions import (
     Transaction,
     TransactionProcessor,
     TransactionQueue,
-    TransactionStatus,
     TransactionType,
 )
 
@@ -19,7 +18,14 @@ def print_separator(title: str) -> None:
     print("\n" + "=" * 25 + f" {title} " + "=" * 25)
 
 
-def create_demo_data() -> tuple[Bank, list[Client], dict[str, object], list[Transaction], AuditLog]:
+def create_demo_data() -> tuple[
+    Bank,
+    list[Client],
+    dict[str, object],
+    list[Transaction],
+    AuditLog,
+    dict[tuple[str, str], float],
+]:
     bank = Bank("Base OOP Bank")
     audit_log = AuditLog(file_path="reports/day7_audit.log")
     risk_analyzer = RiskAnalyzer(
@@ -28,28 +34,34 @@ def create_demo_data() -> tuple[Bank, list[Client], dict[str, object], list[Tran
         frequent_operations_window_minutes=10,
     )
 
+    exchange_rates = {
+        ("RUB", "USD"): 0.011,
+        ("USD", "RUB"): 90.0,
+        ("EUR", "USD"): 1.08,
+        ("USD", "EUR"): 0.93,
+        ("RUB", "EUR"): 0.010,
+        ("EUR", "RUB"): 98.0,
+        ("KZT", "RUB"): 0.19,
+        ("RUB", "KZT"): 5.20,
+        ("CNY", "RUB"): 12.50,
+        ("RUB", "CNY"): 0.08,
+        ("KZT", "USD"): 0.0021,
+        ("USD", "KZT"): 470.0,
+        ("USD", "CNY"): 7.20,
+        ("CNY", "USD"): 0.139,
+        ("EUR", "KZT"): 510.0,
+        ("KZT", "EUR"): 0.00196,
+        ("EUR", "CNY"): 7.8,
+        ("CNY", "EUR"): 0.128,
+        ("KZT", "CNY"): 0.015,
+        ("CNY", "KZT"): 66.0,
+    }
+
     processor = TransactionProcessor(
         bank=bank,
         audit_log=audit_log,
         risk_analyzer=risk_analyzer,
-        exchange_rates={
-            ("RUB", "USD"): 0.011,
-            ("USD", "RUB"): 90.0,
-            ("EUR", "USD"): 1.08,
-            ("USD", "EUR"): 0.93,
-            ("RUB", "EUR"): 0.010,
-            ("EUR", "RUB"): 98.0,
-            ("KZT", "RUB"): 0.19,
-            ("RUB", "KZT"): 5.20,
-            ("CNY", "RUB"): 12.50,
-            ("RUB", "CNY"): 0.08,
-            ("KZT", "USD"): 0.0021,
-            ("USD", "KZT"): 470.0,
-            ("USD", "CNY"): 7.20,
-            ("CNY", "USD"): 0.139,
-            ("EUR", "KZT"): 510.0,
-            ("KZT", "EUR"): 0.00196,
-        },
+        exchange_rates=exchange_rates,
         external_transfer_fee_rate=0.015,
         fixed_external_fee=10.0,
     )
@@ -128,15 +140,18 @@ def create_demo_data() -> tuple[Bank, list[Client], dict[str, object], list[Tran
     queue.cancel_transaction(transactions[30].transaction_id)
     processor.process_queue(queue, now=datetime(2026, 4, 7, 16, 0, 0))
 
-    return bank, clients, accounts, transactions, audit_log
+    return bank, clients, accounts, transactions, audit_log, exchange_rates
 
 
 def main() -> None:
-    bank, clients, accounts, transactions, audit_log = create_demo_data()
+    bank, clients, accounts, transactions, audit_log, exchange_rates = create_demo_data()
     report_builder = ReportBuilder(bank, transactions, audit_log, base_output_dir="reports")
 
     client_report = report_builder.build_client_report("C001")
-    bank_report = report_builder.build_bank_report()
+    bank_report = report_builder.build_bank_report(
+        base_currency="RUB",
+        exchange_rates=exchange_rates,
+    )
     risk_report = report_builder.build_risk_report()
 
     client_text = report_builder.build_text_report(client_report)
@@ -178,7 +193,10 @@ def main() -> None:
     print(f"Счетов: {len(accounts)}")
     print(f"Транзакций: {len(transactions)}")
     print(f"Audit events: {len(audit_log.entries)}")
-    print(f"Общий баланс банка: {bank.get_total_balance()}")
+    print(
+        "Общий баланс банка в RUB: "
+        f"{bank.get_total_balance_converted('RUB', exchange_rates)}"
+    )
 
 
 if __name__ == "__main__":
