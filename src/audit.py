@@ -203,12 +203,12 @@ class RiskAnalyzer:
         if not sender_account_id or not receiver_account_id:
             return False
 
-        receivers = self._known_receivers_by_sender.setdefault(sender_account_id, set())
-        if receiver_account_id in receivers:
-            return False
+        receivers = self._known_receivers_by_sender.get(sender_account_id, set())
+        return receiver_account_id not in receivers
 
-        receivers.add(receiver_account_id)
-        return True
+    def register_receiver(self, sender_account_id: str, receiver_account_id: str) -> None:
+        """Фиксирует нового получателя после успешного завершения перевода."""
+        self._known_receivers_by_sender.setdefault(sender_account_id, set()).add(receiver_account_id)
 
     def analyze_transaction(self, transaction: Any, operation_time: datetime | None = None) -> dict[str, Any]:
         timestamp = operation_time or getattr(transaction, "created_at", datetime.now())
