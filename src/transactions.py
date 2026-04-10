@@ -285,6 +285,8 @@ class TransactionProcessor:
         return self._risk_analyzer.analyze_transaction(transaction, operation_time=transaction.created_at)
 
     def process_transaction(self, transaction: Transaction) -> bool:
+        self._bank._check_operation_allowed()
+
         risk_result = self._analyze_risk(transaction)
 
         if risk_result is not None:
@@ -330,6 +332,17 @@ class TransactionProcessor:
 
             transaction.mark_completed()
             self._processed_transactions.append(transaction)
+
+            if (
+                self._risk_analyzer is not None
+                and transaction.transaction_type
+                in {TransactionType.TRANSFER_INTERNAL, TransactionType.TRANSFER_EXTERNAL}
+                and transaction.sender_account_id
+                and transaction.receiver_account_id
+            ):
+                self._risk_analyzer.register_receiver(
+                    transaction.sender_account_id, transaction.receiver_account_id
+                )
 
             self._log_audit(
                 level=AuditLevel.INFO,
@@ -399,15 +412,14 @@ class TransactionProcessor:
             transaction.currency,
             sender.currency,
         )
-
-        self._ensure_transfer_allowed(sender, amount_in_sender_currency)
-        sender.withdraw(amount_in_sender_currency)
-
         amount_in_receiver_currency = self._convert_amount(
             transaction.amount,
             transaction.currency,
             receiver.currency,
         )
+
+        self._ensure_transfer_allowed(sender, amount_in_sender_currency)
+        sender.withdraw(amount_in_sender_currency)
         receiver.deposit(amount_in_receiver_currency)
 
     def _process_external_transfer(self, transaction: Transaction) -> None:
